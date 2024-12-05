@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://vtp4a8lbfgxt"]
+
+[ext_resource type="Script" path="res://Scenes/test_bad_chat_message.gd" id="1_d2igb"]
+
+[node name="ChatMessageButton" type="Button"]
+offset_left = 693.0
+offset_top = 96.0
+offset_right = 1133.0
+offset_bottom = 180.0
+text = "BAD MESSAGE"
+alignment = 0
+script = ExtResource("1_d2igb")
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]

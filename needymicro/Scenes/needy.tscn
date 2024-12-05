@@ -1,0 +1,248 @@
+[gd_scene load_steps=12 format=3 uid="uid://bvogyj8ja7h3f"]
+
+[ext_resource type="Script" path="res://Scenes/countdown.gd" id="2_0gmmp"]
+[ext_resource type="Script" path="res://Scenes/delete_count.gd" id="2_3akx7"]
+[ext_resource type="Script" path="res://Scenes/game_manager.gd" id="2_aq5ow"]
+[ext_resource type="Texture2D" uid="uid://5wan3nfjn8ii" path="res://Assets/Sprites/PlayerBGIdleAnimation-Sheet.png" id="5_mncfa"]
+[ext_resource type="AudioStream" uid="uid://c4n3wfcyfgyns" path="res://Assets/Sound/BGM.wav" id="5_rv77b"]
+[ext_resource type="Texture2D" uid="uid://dfi5hdhx4wr6s" path="res://Assets/Sprites/PlayerThumbsUpAnimation.png" id="5_u85jw"]
+[ext_resource type="Texture2D" uid="uid://b3omvs5c8xulf" path="res://Assets/Sprites/Background.png" id="6_5xyab"]
+[ext_resource type="Texture2D" uid="uid://byevdg2xgykd2" path="res://Assets/Sprites/PlayerCryingAnimation.png" id="6_v4cy8"]
+
+[sub_resource type="Animation" id="Animation_cisvi"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+
+[sub_resource type="Animation" id="Animation_qtmlq"]
+resource_name = "Yapping"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(-0.0333333, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jkkhh"]
+_data = {
+"RESET": SubResource("Animation_cisvi"),
+"Yapping": SubResource("Animation_qtmlq")
+}
+
+[node name="Needy" type="Node2D"]
+
+[node name="CountdownPanel" type="Panel" parent="."]
+offset_left = 506.0
+offset_top = 241.0
+offset_right = 608.0
+offset_bottom = 343.0
+
+[node name="Countdown" type="Label" parent="CountdownPanel"]
+layout_mode = 0
+offset_right = 99.0
+offset_bottom = 99.0
+theme_override_font_sizes/font_size = 42
+text = "0.00"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("2_0gmmp")
+
+[node name="DeletesPanel" type="Panel" parent="."]
+offset_left = 276.0
+offset_top = -247.0
+offset_right = 608.0
+offset_bottom = -189.0
+
+[node name="DeleteCount" type="Label" parent="DeletesPanel" node_paths=PackedStringArray("gameManager")]
+layout_mode = 0
+offset_left = 247.0
+offset_right = 330.0
+offset_bottom = 58.0
+theme_override_font_sizes/font_size = 42
+text = "0.00"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("2_3akx7")
+gameManager = NodePath("../../GameManager")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.9, 0.9)
+
+[node name="Panel" type="Panel" parent="."]
+clip_contents = true
+offset_left = 276.0
+offset_top = -165.0
+offset_right = 605.0
+offset_bottom = 233.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel"]
+layout_mode = 0
+offset_top = 36.0
+offset_right = 329.0
+offset_bottom = 480.0
+horizontal_scroll_mode = 0
+
+[node name="ChatContainer" type="VBoxContainer" parent="Panel/ScrollContainer"]
+clip_contents = true
+layout_mode = 2
+
+[node name="GameManager" type="Node" parent="." node_paths=PackedStringArray("deleteCounter", "player", "playerWin", "playerLose", "playerAnim", "chatContainer", "prePostGameTimer", "gameTimer", "instruction", "winPanel", "losePanel")]
+script = ExtResource("2_aq5ow")
+deleteCounter = NodePath("../DeletesPanel/DeleteCount")
+player = NodePath("../Player")
+playerWin = NodePath("../PlayerWin")
+playerLose = NodePath("../PlayerLose")
+playerAnim = NodePath("../Player/AnimationPlayer")
+chatContainer = NodePath("../Panel/ScrollContainer/ChatContainer")
+prePostGameTimer = NodePath("PrePostGameTimer")
+gameTimer = NodePath("GameTimer")
+instruction = NodePath("../ModTheChat")
+winPanel = NodePath("../Win")
+losePanel = NodePath("../Lose")
+
+[node name="GameTimer" type="Timer" parent="GameManager"]
+wait_time = 10.0
+
+[node name="PrePostGameTimer" type="Timer" parent="GameManager"]
+wait_time = 2.0
+
+[node name="ChatTimer" type="Timer" parent="GameManager"]
+wait_time = 0.4
+autostart = true
+
+[node name="ModTheChat" type="Panel" parent="."]
+visible = false
+z_index = 2
+offset_left = -270.0
+offset_top = -84.0
+offset_right = 320.0
+offset_bottom = 70.0
+
+[node name="Label" type="Label" parent="ModTheChat"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 27.0
+offset_right = 568.0
+offset_bottom = 128.0
+theme_override_font_sizes/font_size = 73
+text = "MOD THE CHAT"
+horizontal_alignment = 1
+
+[node name="Win" type="Panel" parent="."]
+visible = false
+z_index = 2
+offset_left = -270.0
+offset_top = -84.0
+offset_right = 320.0
+offset_bottom = 70.0
+
+[node name="Label" type="Label" parent="Win"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 27.0
+offset_right = 568.0
+offset_bottom = 128.0
+theme_override_font_sizes/font_size = 73
+text = "SUCCESS"
+horizontal_alignment = 1
+
+[node name="Lose" type="Panel" parent="."]
+visible = false
+z_index = 2
+offset_left = -270.0
+offset_top = -84.0
+offset_right = 320.0
+offset_bottom = 70.0
+
+[node name="Label" type="Label" parent="Lose"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 27.0
+offset_right = 568.0
+offset_bottom = 128.0
+theme_override_font_sizes/font_size = 73
+text = "FAIL"
+horizontal_alignment = 1
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_rv77b")
+volume_db = -15.0
+autoplay = true
+
+[node name="Background" type="Sprite2D" parent="."]
+z_index = -2
+texture = ExtResource("6_5xyab")
+
+[node name="TextEdit" type="TextEdit" parent="Background"]
+anchors_preset = -1
+anchor_right = 0.194
+anchor_bottom = 0.081
+offset_left = -599.0
+offset_top = 237.0
+offset_right = -9.32001
+offset_bottom = 215.68
+theme_override_colors/background_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "He did what in his cup? [STREAMER YAPPING]"
+
+[node name="TextEdit2" type="TextEdit" parent="Background"]
+anchors_preset = -1
+anchor_right = 0.194
+anchor_bottom = 0.081
+offset_left = -599.0
+offset_top = 274.0
+offset_right = 8.67999
+offset_bottom = 329.68
+theme_override_colors/background_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "268 watching now	Started streaming 1 hour ago	#TenshiKaiwai	#Yapping #Gamer
+alrighty chat room today I'm talk about whatever the heck I feel like today so please be nice in chat or
+I will literally cry"
+placeholder_text = "description"
+
+[node name="PlayerWin" type="Sprite2D" parent="."]
+visible = false
+texture_filter = 1
+position = Vector2(-170, -7)
+texture = ExtResource("5_u85jw")
+
+[node name="PlayerLose" type="Sprite2D" parent="."]
+visible = false
+texture_filter = 1
+position = Vector2(-170, -7)
+texture = ExtResource("6_v4cy8")
+
+[node name="Player" type="Sprite2D" parent="."]
+z_index = -1
+texture_filter = 1
+position = Vector2(-170, -7)
+texture = ExtResource("5_mncfa")
+hframes = 2
+vframes = 2
+frame = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Player"]
+libraries = {
+"": SubResource("AnimationLibrary_jkkhh")
+}
+
+[connection signal="timeout" from="GameManager/GameTimer" to="GameManager" method="_on_game_timer_timeout"]
+[connection signal="timeout" from="GameManager/PrePostGameTimer" to="GameManager" method="_on_pre_post_game_timer_timeout"]
+[connection signal="timeout" from="GameManager/ChatTimer" to="GameManager" method="_on_chat_timer_timeout"]
