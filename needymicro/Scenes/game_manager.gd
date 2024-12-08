@@ -84,7 +84,15 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	_update_state()
-	
+
+#put deletecount in singleton and check singleton for delete count during _update_state()
+func lower_count() -> void:
+	if deleteCount > 1:
+		deleteCount-1
+	else:
+		Singleton.success = false
+		Singleton.pressed = true
+		stop_game()
 
 func _update_state():
 	if not runningTimer:
