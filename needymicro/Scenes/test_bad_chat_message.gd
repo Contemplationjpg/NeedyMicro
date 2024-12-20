@@ -17,7 +17,8 @@ func _on_pressed() -> void:
 		disabled = true
 		visible = false
 		if good:
-			gameManager.lower_count()
+			Singleton.delete_count()
+			gameManager.deleteCounter.update_count()
 		if not good:
 			Singleton.pressed = true
 			Singleton.success = true

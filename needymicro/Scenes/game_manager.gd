@@ -4,14 +4,13 @@ class_name Game_Manager
 enum States {PRE, GAME, POST}
 var state = States
 var runningTimer = false
-var deleteCount = 3
 @export var deleteCounter: Label
 
 @export var player: Sprite2D
 @export var playerWin: Sprite2D
 @export var playerLose: Sprite2D
 @export var playerAnim: AnimationPlayer
-@export var yapAnim: Animation
+@onready var loseAnim: AnimationPlayer = playerLose.get_child(0)
 
 @onready var badButtonTemplate: PackedScene = load("res://Objects/bad_chat_message_button.tscn")
 @onready var goodButtonTemplate: PackedScene	 = load("res://Objects/good_chat_message_button.tscn")
@@ -85,15 +84,6 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	_update_state()
 
-#put deletecount in singleton and check singleton for delete count during _update_state()
-func lower_count() -> void:
-	if deleteCount > 1:
-		deleteCount-1
-	else:
-		Singleton.success = false
-		Singleton.pressed = true
-		stop_game()
-
 func _update_state():
 	if not runningTimer:
 		if state == States.PRE:
@@ -125,6 +115,7 @@ func win_check():
 	else:
 		losePanel.visible = true
 		playerLose.visible = true
+		loseAnim.play("sob")
 		print("lose")
 
 func _on_pre_post_game_timer_timeout() -> void:
@@ -134,7 +125,7 @@ func _on_pre_post_game_timer_timeout() -> void:
 		runningTimer = false
 	elif state == 2:
 		print("game over")
-		get_tree().quit()
+		get_tree().change_scene_to_file("res://Scenes/title.tscn")
 	
 func stop_game():
 	gameTimer.stop()
@@ -164,12 +155,16 @@ func _create_chat_message(bad: bool):
 
 func _on_chat_timer_timeout() -> void:
 	if state > 0 and not gameOver:
-		var t = rng.randi_range(0,5)
-		if not alreadyBadMessage and countdown.time<3.5:
-			_create_chat_message(true)
-			alreadyBadMessage = true
-		elif not alreadyBadMessage and t==0:
-			_create_chat_message(true)
-			alreadyBadMessage = true
+		var t = rng.randi_range(0,1)
+		if t==0:
+			pass
 		else:
-			_create_chat_message(false)
+			var s = rng.randi_range(0,7)
+			if not alreadyBadMessage and countdown.time<3.5:
+				_create_chat_message(true)
+				alreadyBadMessage = true
+			elif not alreadyBadMessage and s==0:
+				_create_chat_message(true)
+				alreadyBadMessage = true
+			else:
+				_create_chat_message(false)
