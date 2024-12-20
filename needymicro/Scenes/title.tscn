@@ -7,6 +7,7 @@
 [node name="Title" type="Node2D"]
 
 [node name="PlayButton" type="Button" parent="."]
+z_index = 1
 offset_left = -577.0
 offset_right = 534.0
 offset_bottom = 167.0
@@ -18,11 +19,21 @@ script = ExtResource("1_bs2dt")
 zoom = Vector2(0.9, 0.9)
 
 [node name="Title" type="Sprite2D" parent="."]
+z_index = 1
 position = Vector2(0, -133)
 texture = ExtResource("2_6jkjy")
 
 [node name="Background" type="Sprite2D" parent="."]
 z_index = -5
 texture = ExtResource("1_2d1te")
+
+[node name="Version Label" type="Label" parent="."]
+z_index = 1
+offset_left = 534.0
+offset_top = 331.0
+offset_right = 606.0
+offset_bottom = 354.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Alpha 0.1"
 
 [connection signal="button_up" from="PlayButton" to="PlayButton" method="_on_button_up"]
