@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bvogyj8ja7h3f"]
+[gd_scene load_steps=15 format=3 uid="uid://bvogyj8ja7h3f"]
 
 [ext_resource type="Script" path="res://Scenes/countdown.gd" id="2_0gmmp"]
 [ext_resource type="Script" path="res://Scenes/delete_count.gd" id="2_3akx7"]
@@ -7,7 +7,43 @@
 [ext_resource type="AudioStream" uid="uid://c4n3wfcyfgyns" path="res://Assets/Sound/BGM.wav" id="5_rv77b"]
 [ext_resource type="Texture2D" uid="uid://dfi5hdhx4wr6s" path="res://Assets/Sprites/PlayerThumbsUpAnimation.png" id="5_u85jw"]
 [ext_resource type="Texture2D" uid="uid://b3omvs5c8xulf" path="res://Assets/Sprites/Background.png" id="6_5xyab"]
-[ext_resource type="Texture2D" uid="uid://byevdg2xgykd2" path="res://Assets/Sprites/PlayerCryingAnimation.png" id="6_v4cy8"]
+[ext_resource type="Texture2D" uid="uid://daduip3ypw513" path="res://Assets/Sprites/PlayerCryingAnimation.-Sheet.png" id="7_vhurk"]
+
+[sub_resource type="Animation" id="Animation_v2thy"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_uangt"]
+resource_name = "sob"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.0333333, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, 1, 2]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_15p7d"]
+_data = {
+"RESET": SubResource("Animation_v2thy"),
+"sob": SubResource("Animation_uangt")
+}
 
 [sub_resource type="Animation" id="Animation_cisvi"]
 length = 0.001
@@ -72,11 +108,10 @@ offset_bottom = -189.0
 
 [node name="DeleteCount" type="Label" parent="DeletesPanel" node_paths=PackedStringArray("gameManager")]
 layout_mode = 0
-offset_left = 247.0
 offset_right = 330.0
 offset_bottom = 58.0
-theme_override_font_sizes/font_size = 42
-text = "0.00"
+theme_override_font_sizes/font_size = 28
+text = "Deletes Remaining: 0.00"
 horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("2_3akx7")
@@ -124,7 +159,7 @@ wait_time = 10.0
 wait_time = 2.0
 
 [node name="ChatTimer" type="Timer" parent="GameManager"]
-wait_time = 0.4
+wait_time = 0.6
 autostart = true
 
 [node name="ModTheChat" type="Panel" parent="."]
@@ -209,7 +244,7 @@ anchor_bottom = 0.081
 offset_left = -599.0
 offset_top = 274.0
 offset_right = 8.67999
-offset_bottom = 329.68
+offset_bottom = 301.68
 theme_override_colors/background_color = Color(1, 1, 1, 1)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "268 watching now	Started streaming 1 hour ago	#TenshiKaiwai	#Yapping #Gamer
@@ -224,10 +259,15 @@ position = Vector2(-170, -7)
 texture = ExtResource("5_u85jw")
 
 [node name="PlayerLose" type="Sprite2D" parent="."]
-visible = false
 texture_filter = 1
 position = Vector2(-170, -7)
-texture = ExtResource("6_v4cy8")
+texture = ExtResource("7_vhurk")
+hframes = 3
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PlayerLose"]
+libraries = {
+"": SubResource("AnimationLibrary_15p7d")
+}
 
 [node name="Player" type="Sprite2D" parent="."]
 z_index = -1

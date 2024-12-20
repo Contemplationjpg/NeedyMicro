@@ -5,7 +5,8 @@ class_name DeleteCount
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	updateCount()
+	update_count()
 
-func updateCount() -> void:
-	text = "Deletes Left: %d" % gameManager.deleteCount
+func update_count() -> void:
+	print("updating count")
+	text = "Deletes Left: %d" % Singleton.deleteCount
