@@ -155,16 +155,12 @@ func _create_chat_message(bad: bool):
 
 func _on_chat_timer_timeout() -> void:
 	if state > 0 and not gameOver:
-		var t = rng.randi_range(0,1)
-		if t==0:
-			pass
+		var s = rng.randi_range(0,7)
+		if not alreadyBadMessage and countdown.time<3.5:
+			_create_chat_message(true)
+			alreadyBadMessage = true
+		elif not alreadyBadMessage and s==0:
+			_create_chat_message(true)
+			alreadyBadMessage = true
 		else:
-			var s = rng.randi_range(0,7)
-			if not alreadyBadMessage and countdown.time<3.5:
-				_create_chat_message(true)
-				alreadyBadMessage = true
-			elif not alreadyBadMessage and s==0:
-				_create_chat_message(true)
-				alreadyBadMessage = true
-			else:
-				_create_chat_message(false)
+			_create_chat_message(false)
